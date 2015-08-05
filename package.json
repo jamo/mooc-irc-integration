@@ -1,0 +1,6 @@
+{
+  "name": "mooc-irc-integration",
+  "version": "0.0.1",
+  "description": "IRC relay for in browser irc integration",
+  "dependencies": {}
+}
