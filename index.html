@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      .irc {position: relative}
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; }
+      form input { border: 0; padding: 10px 0px 10px 10px;}
+      form button { width: 5px; background: #81d4fa; border: none; padding: 10px; margin-right: .5%; }
+      #messages tr:nth-child(odd) { background: #eee;  }
+      #nick {width: 50px; }
+      #message {width: 230px;}
+      #irc-client {
+        position: fixed;
+        bottom: 0px;
+        right: 220px;
+        height: 285px;
+        background-color: rgb(237, 239, 244);
+        width: 300px;
+        border: 1px solid rgba(29, 49, 91, .3);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="irc" id="irc-client">
+      <table id="messages"></table>
+      <form id="irc-messages" action="">
+        <input type="text" name="nick" id="nick" placeholder="Nick"/>
+        <input type="text" id="message" autocomplete="off" placeholder="Message" /><button id="send-irc-message">Send</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="irc-cli.js"></script>
+    </script>
+  </body>
+</html>
