@@ -5,10 +5,12 @@ socket.on('chat messages', function(msg){
   var timestamp = document.createElement("td");
   var fromNode = document.createElement("td");
   var messageNode = document.createElement("td");
-  var fromText = document.createTextNode(msg['from'] || msg['nick']);
+  var fromText = document.createTextNode(msg['from'].slice(0,10));
   var messageText = document.createTextNode(msg['message']);
+  var timestampText = document.createTextNode(msg['timestamp']);
   newRow.appendChild(timestamp);
-  timestamp.appendChild(document.createTextNode(new Date().toLocaleTimeString()));
+
+  timestamp.appendChild(timestampText);
   newRow.appendChild(fromNode);
   fromNode.appendChild(fromText);
   newRow.appendChild(messageNode);
@@ -18,12 +20,12 @@ socket.on('chat messages', function(msg){
 
 function processForm(e) {
   if (e.preventDefault) e.preventDefault();
-  socket.emit('chat message', { nick: document.getElementById("nick").value, message: document.getElementById('message').value });
+  socket.emit('chat message', { from: document.getElementById("nick").value, message: document.getElementById('message').value });
   document.getElementById('message').value = "";
   return false;
 }
 
-var form = document.getElementById('irc-messages');
+var form = document.getElementById('irc-messages-form');
 
 if (form.attachEvent) {
   form.attachEvent("submit", processForm);

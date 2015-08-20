@@ -1,4 +1,5 @@
 // Socket.io brigde from html interface and irc.
+var strftime = require('strftime');
 var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
@@ -8,6 +9,10 @@ var irc = require('irc');
 
 var client = new irc.Client('irc.stealth.net', 'jamobottestionpasmullapitkanick', {
     channels: ['#jamotestaa'],
+    userName: 'moocbot',
+    realName: 'MOOC.fi irc bridge',
+    showErrors: false,
+    autoRejoin: false
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,9 +31,19 @@ io.on('connection', function(socket){
 
   socket.on('chat message', function(msg){
     console.log('message: ' + JSON.stringify(msg));
+    msg.timestamp = strftime('%H:%M');
+    console.log('message2: ' + JSON.stringify(msg));
     socket.emit('chat messages', msg);
-    client.say('#jamotestaa', msg['nick'] + ': ' + msg['message']);
+    try {
+      client.say('#jamotestaa', msg.from + ': ' + msg.message);
+    } catch (err) {
+      console.log(err);
+    }
   });
+  socket.on('error', function(err) {
+    console.log(err);
+  });
+
 });
 
 http.listen(3000, function(){
@@ -44,5 +59,6 @@ client.addListener('error', function(message) {
 client.addListener('message', function(from, to, message) {
   console.log(from + ':'+ ' ' + to + ' ' + message);
   console.log(JSON.stringify(message));
-  io.emit('chat messages', {nick: from, to: to, message: message});
+  var timestamp = strftime('%H:%M');
+  io.emit('chat messages', {timestamp: timestamp, from: from, to: to, message: message});
 });
